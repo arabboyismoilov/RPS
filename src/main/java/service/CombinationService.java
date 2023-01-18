@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class CombinationService {
     List<Combination> combinations = new ArrayList<>(Arrays.asList(
@@ -28,5 +29,15 @@ public class CombinationService {
                 .orElse(null);
 
         return com == null? -1 : com.getWiningChoice();
+    }
+
+    public void addCombination(List<Integer> choiceIds, int winningChoiceId){
+        combinations.add(new Combination(choiceIds, winningChoiceId));
+    }
+
+    public void deleteCombinations(int choiceId){
+        combinations = combinations.stream()
+                .filter(combination -> !combination.getChoices().contains(choiceId))
+                .collect(Collectors.toList());
     }
 }

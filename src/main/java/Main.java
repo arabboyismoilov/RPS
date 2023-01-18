@@ -3,12 +3,14 @@ import service.ChoiceService;
 import service.CombinationService;
 import service.MessageConstants;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         ChoiceService choiceService = new ChoiceService();
         CombinationService combinationService = new CombinationService();
+        Scanner scanner = new Scanner(System.in);
 
         System.out.println(MessageConstants.WELCOME_TEXT);
 
@@ -19,14 +21,14 @@ public class Main {
             // Getting input from the user
             playerCommand = getInput();
 
+            // Getting all choices from the list
+            String choiceStr = "";
+            for (Choice choice : choiceService.choices) {
+                choiceStr += choice.getId() + " - " + choice.getName() + "\n";
+            }
+
             if (playerCommand == 1){
                 System.out.println(MessageConstants.PLAY_MENU);
-
-                // Getting all choices from the list
-                String choiceStr = "";
-                for (Choice choice : choiceService.choices) {
-                    choiceStr += choice.getId() + " - " + choice.getName() + "\n";
-                }
 
                 //showing available choices in console
                 System.out.println(choiceStr);
@@ -71,6 +73,49 @@ public class Main {
             }
             else if (playerCommand == 2){
                 System.out.println(MessageConstants.SETTINGS_MENU);
+
+                playerCommand = getInput();
+                if (playerCommand == 1){
+                    System.out.println(MessageConstants.NEW_CHOICE_ADD_MESSAGE);
+
+                    // getting new choice name
+                    String newChoiceName = scanner.nextLine();
+                    int newChoiceId = choiceService.addNewChoice(newChoiceName);
+
+                    System.out.println(MessageConstants.NEW_CHOICE_COMBINATION_ASK);
+
+                    // iterating all other choices to create with new choice
+                    for (Choice choice : choiceService.choices) {
+                        if (choice.getId() == newChoiceId){
+                            continue;
+                        }
+                        // asking who beats the other choice
+                        System.out.println(choice.getName() + MessageConstants.ASK_COMBINATION_TYPE);
+
+                        // getting right combination
+                        int isBeat = getInput();
+
+                        // finding who beats the other choice
+                        int winningChoiceId = isBeat == 1? choice.getId() : newChoiceId;
+
+                        // adding combination to list
+                        combinationService.addCombination(Arrays.asList(choice.getId(), newChoiceId), winningChoiceId);
+                    }
+
+                    System.out.println(MessageConstants.SUCCESS_MESSAGE);
+                }
+                else if (playerCommand == 2){
+                    System.out.println(MessageConstants.DELETE_CHOICE_QUESTION + choiceStr);
+                    int deleteChoiceId = getInput();
+
+                    // deleting choice from choice list
+                    choiceService.deleteChoice(deleteChoiceId);
+
+                    // deleting its combinations
+                    combinationService.deleteCombinations(deleteChoiceId);
+
+                    System.out.println(MessageConstants.DELETE_SUCCESS_MESSAGE);
+                }
             }
         }
     }
