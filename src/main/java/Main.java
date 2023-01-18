@@ -74,8 +74,8 @@ public class Main {
             else if (playerCommand == 2){
                 System.out.println(MessageConstants.SETTINGS_MENU);
 
-                playerCommand = getInput();
-                if (playerCommand == 1){
+                int settingsStage = getInput();
+                if (settingsStage == 1){
                     System.out.println(MessageConstants.NEW_CHOICE_ADD_MESSAGE);
 
                     // getting new choice name
@@ -85,7 +85,8 @@ public class Main {
                     System.out.println(MessageConstants.NEW_CHOICE_COMBINATION_ASK);
 
                     // iterating all other choices to create with new choice
-                    for (Choice choice : choiceService.choices) {
+                    for (int i=0; i < choiceService.choices.size(); i++) {
+                        Choice choice = choiceService.choices.get(i);
                         if (choice.getId() == newChoiceId){
                             continue;
                         }
@@ -94,6 +95,12 @@ public class Main {
 
                         // getting right combination
                         int isBeat = getInput();
+
+                        //if the user writes string instead of number it will ask again
+                        if (isBeat == 400){
+                            i--;
+                            continue;
+                        }
 
                         // finding who beats the other choice
                         int winningChoiceId = isBeat == 1? choice.getId() : newChoiceId;
@@ -104,7 +111,7 @@ public class Main {
 
                     System.out.println(MessageConstants.SUCCESS_MESSAGE);
                 }
-                else if (playerCommand == 2){
+                else if (settingsStage == 2){
                     System.out.println(MessageConstants.DELETE_CHOICE_QUESTION + choiceStr);
                     int deleteChoiceId = getInput();
 
