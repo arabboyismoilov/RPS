@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ This class used to get data from third party api
+ */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
