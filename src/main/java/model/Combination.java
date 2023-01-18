@@ -5,6 +5,12 @@ import lombok.Getter;
 import java.util.List;
 import java.util.Objects;
 
+/**
+    This class stores two choices in list and winning choice Id.
+    For example, choices may be rock and scissors and winningChoice will be rock as rock beats scissors.
+    The main aim to create this class is to make dynamic application and new choices can be added
+    by console without writing any if else code.
+*/
 @Getter
 public class Combination {
     private List<Integer> choices;

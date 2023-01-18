@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+    This class represents choices like rock or paper
+ */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
