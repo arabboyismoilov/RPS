@@ -20,6 +20,7 @@ public class CombinationService {
             return 0;
         }
 
+        // checks all the combinations that has choice1 and choice2
         Combination com = combinations.stream()
                 .filter(combination -> {
                     List<Integer> choices = combination.getChoices();

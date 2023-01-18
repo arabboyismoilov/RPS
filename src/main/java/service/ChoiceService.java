@@ -1,7 +1,12 @@
 package service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Choice;
+import model.Response;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,12 +27,36 @@ public class ChoiceService {
     }
 
     public Choice getChoiceById(int choiceId){
-        return choices.stream().filter(choice -> choice.getId()==choiceId).findFirst().orElse(null);
+        return choices.stream()
+                .filter(choice -> choice.getId()==choiceId).findFirst().orElse(null);
+    }
+
+    public Choice getChoiceByName(String name){
+        return choices.stream()
+                .filter(choice -> choice.getName().equals(name)).findFirst().orElse(null);
     }
 
     public Choice getComputerChoice(){
-        // TODO add external API to get the random choice
-        return getRandomChoice();
+        try {
+            URL url = new URL("https://private-anon-b21807813f-curbrockpaperscissors.apiary-proxy.com/rps-stage/throw");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+
+            InputStream responseStream = con.getInputStream();
+            ObjectMapper mapper = new ObjectMapper();
+            Response response = mapper.readValue(responseStream, Response.class);
+
+            Choice apiChoice = getChoiceByName(response.getBody());
+            if (apiChoice == null){
+                return getRandomChoice();
+            }
+            System.out.println("INFO app has used third party to get random choice");
+            return apiChoice;
+        } catch (Exception e) {
+            System.out.println("INFO getting random choice from local host as server is responding 500" +
+                    "+");
+            return getRandomChoice();
+        }
     }
 
     public Choice getRandomChoice(){
