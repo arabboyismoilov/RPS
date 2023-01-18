@@ -10,7 +10,8 @@ Rules:
 
 # Info
 The game is a console application, to play the game you need to clone the repo and run it in intellij or other java IDEs. 
-When you run it, you saw
+When you run it, you saw this message
+
 ![alt text](src/main/resources/images/Screenshot_2.png)
 
 It is menu and has 3 items. To play game enter 1 and to customise the game enter 2. If you enter 1, you saw following question:

@@ -53,8 +53,7 @@ public class ChoiceService {
             System.out.println("INFO app has used third party to get random choice");
             return apiChoice;
         } catch (Exception e) {
-            System.out.println("INFO getting random choice from local host as server is responding 500" +
-                    "+");
+            System.out.println("INFO getting random choice from local host as server is responding 500");
             return getRandomChoice();
         }
     }
